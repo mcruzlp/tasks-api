@@ -1,15 +1,19 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { Model } from 'mongoose';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { Model } from 'mongoose';
-import { Tasks } from './interfaces/tasks.interface';
-import { CreateTasksDto } from './dto/create-tasks.dto';
+import { Task } from './entities/task.entity';
+
 
 @Injectable()
 export class TasksService {
-  create(createTasksDto: CreateTasksDto) {
-    const createdTasks = new this.tasksModel(createTasksDto);
-    return 'This action adds a new task';
+  constructor(
+    @Inject('TASK_MODEL')
+    private taskModel: Model<Task>,
+  ) {}
+  create(createTaskDto: CreateTaskDto) {
+    const createdTask = new this.taskModel(createTaskDto);
+    return createdTask.save();
   }
 
   findAll() {

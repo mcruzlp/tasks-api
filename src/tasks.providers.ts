@@ -1,10 +1,10 @@
 import { Connection } from 'mongoose';
-import { TasksSchema } from './schemas/tasks.schema';
+import { TaskSchema } from './schemas/task.schema';
 
-export const catsProviders = [
+export const TasksProviders = [
   {
     provide: 'TASKS_MODEL',
-    useFactory: (connection: Connection) => connection.model('Tasks', TasksSchema),
+    useFactory: (connection: Connection) => connection.model('Task', TaskSchema),
     inject: ['DATABASE_CONNECTION'],
   },
 ];

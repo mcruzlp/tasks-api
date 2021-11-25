@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-export const TasksSchema = new mongoose.Schema({
+export const TaskSchema = new mongoose.Schema({
   title: String,
   description: String,
   done: Boolean,
