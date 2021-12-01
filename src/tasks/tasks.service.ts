@@ -2,8 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { Task } from './entities/task.entity';
-
+import { Task } from './interfaces/task.interface';
 
 @Injectable()
 export class TasksService {
@@ -11,24 +10,24 @@ export class TasksService {
     @Inject('TASK_MODEL')
     private taskModel: Model<Task>,
   ) {}
-  create(createTaskDto: CreateTaskDto) {
+
+  async create(createTaskDto: CreateTaskDto): Promise<Task> {
     const createdTask = new this.taskModel(createTaskDto);
     return createdTask.save();
   }
 
-  findAll() {
-    return `This action returns all tasks`;
+  async findAll(): Promise<Task[]> {
+    return this.taskModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} task`;
+  async findOne(id: string): Promise<Task> {
+    return this.taskModel.findById(id);
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+  async update(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
+    return this.taskModel.findByIdAndUpdate(id, updateTaskDto);
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} task`;
+  async remove(id: string): Promise<Task> {
+    return this.taskModel.findByIdAndDelete(id);
   }
 }
